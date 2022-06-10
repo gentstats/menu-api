@@ -20,28 +20,28 @@ export class MenusController {
     return this.menusService.getMenu();
   }
 
-  @Post()
-  create(@Body() createMenuDto: CreateMenuDto) {
-    return this.menusService.create(createMenuDto);
-  }
+  // @Post()
+  // create(@Body() createMenuDto: CreateMenuDto) {
+  //   return this.menusService.create(createMenuDto);
+  // }
 
-  @Get()
-  findAll() {
-    return this.menusService.findAll();
-  }
+  // @Get()
+  // findAll() {
+  //   return this.menusService.findAll();
+  // }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.menusService.findOne(+id);
-  }
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   return this.menusService.findOne(+id);
+  // }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMenuDto: UpdateMenuDto) {
-    return this.menusService.update(+id, updateMenuDto);
-  }
+  // @Patch(':id')
+  // update(@Param('id') id: string, @Body() updateMenuDto: UpdateMenuDto) {
+  //   return this.menusService.update(+id, updateMenuDto);
+  // }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.menusService.remove(+id);
-  }
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.menusService.remove(+id);
+  // }
 }
