@@ -41,10 +41,15 @@ describe('MenusService', () => {
   });
 
   describe('getMenuById', () => {
+    let sampleMenu: MenuEntity;
     let savedMenu: Menu;
+    let recMenu: MenuEntity;
 
     beforeAll(async () => {
-      savedMenu = await repository.createMenu(menu);
+      sampleMenu = menuStub();
+      savedMenu = await repository.createMenu(sampleMenu);
+      recMenu = await service.getMenuById(savedMenu._id);
+      sampleMenu._id = savedMenu._id;
     });
 
     afterAll(async () => {
@@ -55,6 +60,10 @@ describe('MenusService', () => {
       const mockRepository = jest.spyOn(repository, 'getMenuById');
       await service.getMenuById(savedMenu._id);
       expect(mockRepository).toHaveBeenCalled();
+    });
+
+    it('should return the menu', () => {
+      expect(menu).toMatchObject(sampleMenu);
     });
   });
 
