@@ -39,9 +39,14 @@ describe('MenusController', () => {
 
   describe('createMenu', () => {
     const sampleMenu = menuStub();
+    const savedMenu = repository.createMenu(sampleMenu);
+    it('should create an entry with _id and menu', async () => {
+      expect(savedMenu?._id).toBeTruthy();
+      expect(savedMenu?.menu).toBeTruthy();
+    });
 
-    it('should create an entry with _id and menu', async () => {});
-
-    it('menu content should match input', async () => {});
+    it('menu content should match input', async () => {
+      expect(savedMenu.menu).toMatchObject(sampleMenu);
+    });
   });
 });
