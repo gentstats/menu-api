@@ -22,22 +22,16 @@ describe('MenusController', () => {
     expect(controller).toBeDefined();
   });
 
-  it('should return the menu', () => {
-    expect(controller.getMenu()).toMatchObject(menuStub());
-  });
+  describe('getMenu', () => {
+    it(`should call service`, () => {
+      const getMenuSpy = jest.spyOn(service, 'getMenu');
+      controller.getMenu();
+      expect(getMenuSpy).toHaveBeenCalled();
+    });
 
-  it('should return instance of Menu', () => {
-    expect(controller.getMenu()).toBeInstanceOf(Menu);
-  });
-
-  it('should contain a title', () => {
-    const menu: Menu = controller.getMenu();
-    expect(menu).toMatchObject({ title: 'I am a title' });
-  });
-
-  it(`should call service's getMenu`, () => {
-    const getMenuSpy = jest.spyOn(service, 'getMenu');
-    controller.getMenu();
-    expect(getMenuSpy).toHaveBeenCalled();
+    it(`should return the service's output`, () => {
+      const serviceOutput = service.getMenu();
+      expect(controller.getMenu()).toMatchObject(serviceOutput);
+    });
   });
 });
