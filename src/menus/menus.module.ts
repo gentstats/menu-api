@@ -4,6 +4,7 @@ import { MenusController } from './menus.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Menu, MenuSchema } from './schemas/menu.schema';
 import { MongoModule } from '../mongo/mongo.module';
+import { MenuRepository } from './repositories/menu.repository';
 
 @Module({
   imports: [
@@ -16,6 +17,6 @@ import { MongoModule } from '../mongo/mongo.module';
     ]),
   ],
   controllers: [MenusController],
-  providers: [MenusService],
+  providers: [MenusService, MenuRepository],
 })
 export class MenusModule {}
