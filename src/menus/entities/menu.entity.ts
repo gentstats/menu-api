@@ -12,7 +12,7 @@ export class Category {
   products: Product[];
 }
 
-export class Menu {
+export class MenuEntity {
   index: number;
   title: string;
   description: string;

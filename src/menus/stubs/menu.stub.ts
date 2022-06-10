@@ -1,6 +1,6 @@
-import { Menu } from '../entities/menu.entity';
+import { MenuEntity } from '../entities/menu.entity';
 
-export const menuStub = (): Menu => {
+export const menuStub = (): MenuEntity => {
   return {
     index: 1,
     title: 'I am a title',
