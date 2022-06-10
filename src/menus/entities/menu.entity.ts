@@ -1,3 +1,5 @@
+import { Types } from 'mongoose';
+
 export class Product {
   index: number;
   title: string;
@@ -13,6 +15,7 @@ export class Category {
 }
 
 export class MenuEntity {
+  _id?: Types.ObjectId;
   index: number;
   title: string;
   description: string;
