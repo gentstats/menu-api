@@ -6,6 +6,7 @@ import { menuStub } from './stubs/menu.stub';
 
 describe('MenusController', () => {
   let controller: MenusController;
+  let service: MenusService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -14,6 +15,7 @@ describe('MenusController', () => {
     }).compile();
 
     controller = module.get<MenusController>(MenusController);
+    service = module.get<MenusService>(MenusService);
   });
 
   it('should be defined', () => {
@@ -31,5 +33,11 @@ describe('MenusController', () => {
   it('should contain a title', () => {
     const menu: Menu = controller.getMenu();
     expect(menu).toMatchObject({ title: 'I am a title' });
+  });
+
+  it(`should call service's getMenu`, () => {
+    const getMenuSpy = jest.spyOn(service, 'getMenu');
+    controller.getMenu();
+    expect(getMenuSpy).toHaveBeenCalled();
   });
 });
