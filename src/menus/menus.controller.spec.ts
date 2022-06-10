@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { Menu } from './entities/menu.entity';
 import { MenusController } from './menus.controller';
 import { MenusService } from './menus.service';
 import { menuStub } from './stubs/menu.stub';
@@ -21,5 +22,9 @@ describe('MenusController', () => {
 
   it('should return the menu', () => {
     expect(controller.getMenu()).toMatchObject(menuStub());
+  });
+
+  it('should return instance of Menu', () => {
+    expect(controller.getMenu()).toBeInstanceOf(Menu);
   });
 });
