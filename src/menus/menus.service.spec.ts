@@ -63,7 +63,7 @@ describe('MenusService', () => {
     });
 
     it('should return the menu', () => {
-      expect(menu).toMatchObject(sampleMenu);
+      expect(recMenu).toMatchObject(sampleMenu);
     });
   });
 

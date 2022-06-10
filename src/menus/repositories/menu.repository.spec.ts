@@ -56,7 +56,6 @@ describe('MenusController', () => {
     });
 
     it('menu content should match input', async () => {
-      console.log(savedMenu.menu);
       expect(savedMenu.menu[0]).toMatchObject(sampleMenu);
     });
   });
