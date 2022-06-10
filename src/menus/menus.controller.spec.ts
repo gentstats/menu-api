@@ -17,4 +17,10 @@ describe('MenusController', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
+
+  it('should return the menu', () => {
+    expect(controller.getMenu()).toMatchObject({
+      menu: 'I am a menu',
+    });
+  });
 });
