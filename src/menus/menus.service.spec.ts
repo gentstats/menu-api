@@ -40,6 +40,14 @@ describe('MenusService', () => {
     expect(service).toBeDefined();
   });
 
+  describe('getMenuById', () => {
+    it('should call repository', () => {
+      const mockRepository = spyOn(repository, 'getMenuById');
+      await service.getMenuById();
+      expect(mockRepository).toHaveBeenCalled();
+    });
+  });
+
   describe('getMenu', () => {
     it('should return the menu', () => {
       expect(menu).toMatchObject(menuStub());
