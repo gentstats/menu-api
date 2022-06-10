@@ -1,5 +1,6 @@
+import { Menu } from '../entities/menu.entity';
+
 export const menuStub = () => {
-  return {
-    menu: 'I am a menu',
-  };
+  const menu = new Menu();
+  return menu;
 };
