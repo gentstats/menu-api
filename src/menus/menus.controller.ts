@@ -10,6 +10,7 @@ import {
 import { MenusService } from './menus.service';
 import { CreateMenuDto } from './dto/create-menu.dto';
 import { UpdateMenuDto } from './dto/update-menu.dto';
+import { menuStub } from './stubs/menu.stub';
 
 @Controller('menus')
 export class MenusController {
@@ -17,7 +18,7 @@ export class MenusController {
 
   @Get()
   getMenu() {
-    return 'A menu';
+    return menuStub();
   }
 
   @Post()

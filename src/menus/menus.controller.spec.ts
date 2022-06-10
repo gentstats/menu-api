@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { MenusController } from './menus.controller';
 import { MenusService } from './menus.service';
+import { menuStub } from './stubs/menu.stub';
 
 describe('MenusController', () => {
   let controller: MenusController;
@@ -19,8 +20,6 @@ describe('MenusController', () => {
   });
 
   it('should return the menu', () => {
-    expect(controller.getMenu()).toMatchObject({
-      menu: 'I am a menu',
-    });
+    expect(controller.getMenu()).toMatchObject(menuStub());
   });
 });
