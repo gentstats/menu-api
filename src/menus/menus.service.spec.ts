@@ -5,6 +5,7 @@ import { menuStub } from './stubs/menu.stub';
 
 describe('MenusService', () => {
   let service: MenusService;
+  let menu: any;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -12,6 +13,7 @@ describe('MenusService', () => {
     }).compile();
 
     service = module.get<MenusService>(MenusService);
+    menu = service.getMenu();
   });
 
   it('should be defined', () => {
@@ -20,15 +22,34 @@ describe('MenusService', () => {
 
   describe('getMenu', () => {
     it('should return the menu', () => {
-      expect(service.getMenu()).toMatchObject(menuStub());
+      expect(menu).toMatchObject(menuStub());
     });
 
-    it('should contain index, title, description and categories', () => {
-      const menu: any = service.getMenu();
-      expect(menu.index).toBeTruthy();
-      expect(menu.title).toBeTruthy();
-      expect(menu.description).toBeTruthy();
-      expect(menu.categories).toBeTruthy();
+    describe('menu', () => {
+      it('should contain index, title, description and categories', () => {
+        expect(menu.index).toBeTruthy();
+        expect(menu.title).toBeTruthy();
+        expect(menu.description).toBeTruthy();
+        expect(menu.categories).toBeTruthy();
+      });
+
+      describe('categories', () => {
+        it('should contain index, title, description and products', () => {
+          expect(menu.categories[0].index).toBeTruthy();
+          expect(menu.categories[0].title).toBeTruthy();
+          expect(menu.categories[0].description).toBeTruthy();
+          expect(menu.categories[0].products).toBeTruthy();
+        });
+
+        describe('menu', () => {
+          it('should contain index, title, description and price', () => {
+            expect(menu.categories[0].products[0].index).toBeTruthy();
+            expect(menu.categories[0].products[0].title).toBeTruthy();
+            expect(menu.categories[0].products[0].description).toBeTruthy();
+            expect(menu.categories[0].products[0].price).toBeTruthy();
+          });
+        });
+      });
     });
   });
 });
