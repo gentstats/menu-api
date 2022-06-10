@@ -27,4 +27,9 @@ describe('MenusController', () => {
   it('should return instance of Menu', () => {
     expect(controller.getMenu()).toBeInstanceOf(Menu);
   });
+
+  it('should contain a title', () => {
+    const menu: Menu = controller.getMenu();
+    expect(menu).toMatchObject({ title: 'I am a title' });
+  });
 });
