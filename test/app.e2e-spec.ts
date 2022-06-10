@@ -41,11 +41,9 @@ describe('AppController (e2e)', () => {
   });
 
   it('/menus (GET)', () => {
-    const { ...expected } = menuStub();
-
     return request(app.getHttpServer())
       .get('/menus')
       .expect(200)
-      .expect(expected);
+      .expect(menuStub());
   });
 });
