@@ -8,13 +8,14 @@ import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
+import { menuStub } from '../src/menus/stubs/menu.stub';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule, MongoModule],
+      imports: [AppModule],
     }).compile();
 
     app = moduleFixture.createNestApplication<NestFastifyApplication>(
@@ -24,7 +25,7 @@ describe('AppController (e2e)', () => {
       origin: process.env.CORS_ORIGIN,
       credentials: true,
     });
-    await app.listen(process.env.PORT, process.env.HOST);
+    app.listen(process.env.PORT, process.env.HOST);
   });
 
   afterAll(async () => {
@@ -37,5 +38,14 @@ describe('AppController (e2e)', () => {
       .get('/')
       .expect(200)
       .expect('Hello World!');
+  });
+
+  it('/menus (GET)', () => {
+    const { ...expected } = menuStub();
+
+    return request(app.getHttpServer())
+      .get('/menus')
+      .expect(200)
+      .expect(expected);
   });
 });
