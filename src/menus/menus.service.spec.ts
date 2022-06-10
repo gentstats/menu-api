@@ -41,9 +41,19 @@ describe('MenusService', () => {
   });
 
   describe('getMenuById', () => {
-    it('should call repository', () => {
-      const mockRepository = spyOn(repository, 'getMenuById');
-      await service.getMenuById();
+    let savedMenu: Menu;
+
+    beforeAll(async () => {
+      savedMenu = await repository.createMenu(menu);
+    });
+
+    afterAll(async () => {
+      await connections[1].dropCollection('menus');
+    });
+
+    it('should call repository', async () => {
+      const mockRepository = jest.spyOn(repository, 'getMenuById');
+      await service.getMenuById(savedMenu._id);
       expect(mockRepository).toHaveBeenCalled();
     });
   });
