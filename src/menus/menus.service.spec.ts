@@ -23,13 +23,12 @@ describe('MenusService', () => {
       expect(service.getMenu()).toMatchObject(menuStub());
     });
 
-    it('should return instance of Menu', () => {
-      expect(service.getMenu()).toBeInstanceOf(Menu);
-    });
-
-    it('should contain a title', () => {
-      const menu: Menu = service.getMenu();
-      expect(menu).toMatchObject({ title: 'I am a title' });
+    it('should contain index, title, description and categories', () => {
+      const menu: any = service.getMenu();
+      expect(menu.index).toBeTruthy();
+      expect(menu.title).toBeTruthy();
+      expect(menu.description).toBeTruthy();
+      expect(menu.categories).toBeTruthy();
     });
   });
 });
