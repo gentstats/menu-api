@@ -10,7 +10,14 @@ export const menuStub = (): Menu => {
         index: 1,
         title: 'I am a title',
         description: 'Well described',
-        products: [{}],
+        products: [
+          {
+            index: 1,
+            title: 'I am a title',
+            description: 'Well described',
+            price: 3.5,
+          },
+        ],
       },
     ],
   };

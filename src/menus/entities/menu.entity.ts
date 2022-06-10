@@ -1,8 +1,15 @@
+export class Product {
+  index: number;
+  title: string;
+  description: string;
+  price: number;
+}
+
 export class Category {
   index: number;
   title: string;
   description: string;
-  products: object[];
+  products: Product[];
 }
 
 export class Menu {
