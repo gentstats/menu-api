@@ -60,4 +60,25 @@ describe('MenusController', () => {
       expect(savedMenu.menu[0]).toMatchObject(sampleMenu);
     });
   });
+
+  describe('getMenuById', () => {
+    let sampleMenu: MenuEntity;
+    let savedMenu: Menu;
+    let recMenu: MenuEntity;
+
+    beforeAll(async () => {
+      sampleMenu = menuStub();
+      savedMenu = await repository.createMenu(sampleMenu);
+      recMenu = await repository.getMenuById(savedMenu._id);
+      sampleMenu._id = savedMenu._id;
+    });
+
+    afterAll(async () => {
+      await connections[1].dropCollection('menus');
+    });
+
+    it('should return the menu', () => {
+      expect(recMenu).toMatchObject(sampleMenu);
+    });
+  });
 });

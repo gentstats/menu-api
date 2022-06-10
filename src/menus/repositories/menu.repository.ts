@@ -16,4 +16,7 @@ export class MenuRepository {
   async createMenu(menu: MenuEntity): Promise<Menu> {
     return await this.menuModel.create({ menu: [menu] });
   }
+  async getMenuById(_id: string) {
+    return menuStub();
+  }
 }
