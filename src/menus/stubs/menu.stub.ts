@@ -1,7 +1,10 @@
 import { Menu } from '../entities/menu.entity';
 
-export const menuStub = () => {
-  const menu = new Menu();
-  menu.title = 'I am a title';
-  return menu;
+export const menuStub = (): Menu => {
+  return {
+    index: 1,
+    title: 'I am a title',
+    description: 'Well described',
+    categories: [{}],
+  };
 };
