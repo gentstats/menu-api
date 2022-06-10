@@ -38,15 +38,26 @@ describe('MenusController', () => {
   });
 
   describe('createMenu', () => {
-    const sampleMenu = menuStub();
-    const savedMenu = repository.createMenu(sampleMenu);
+    let sampleMenu: MenuEntity;
+    let savedMenu: Menu;
+
+    beforeAll(async () => {
+      sampleMenu = menuStub();
+      savedMenu = await repository.createMenu(sampleMenu);
+    });
+
+    afterAll(async () => {
+      await connections[1].dropCollection('menus');
+    });
+
     it('should create an entry with _id and menu', async () => {
       expect(savedMenu?._id).toBeTruthy();
       expect(savedMenu?.menu).toBeTruthy();
     });
 
     it('menu content should match input', async () => {
-      expect(savedMenu.menu).toMatchObject(sampleMenu);
+      console.log(savedMenu.menu);
+      expect(savedMenu.menu[0]).toMatchObject(sampleMenu);
     });
   });
 });

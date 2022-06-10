@@ -13,7 +13,7 @@ export class MenuRepository {
   getMenu() {
     return menuStub();
   }
-  async createMenu(menu) {
-    return menuStub();
+  async createMenu(menu: MenuEntity): Promise<Menu> {
+    return await this.menuModel.create({ menu: [menu] });
   }
 }
