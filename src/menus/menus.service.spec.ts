@@ -1,35 +1,102 @@
+import { MongooseModule } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
-import { Menu } from './entities/menu.entity';
+import { connections } from 'mongoose';
+import { MongoModule } from '../mongo/mongo.module';
+import { MenuEntity } from './entities/menu.entity';
 import { MenusService } from './menus.service';
+import { MenuRepository } from './repositories/menu.repository';
+import { Menu, MenuSchema } from './schemas/menu.schema';
 import { menuStub } from './stubs/menu.stub';
 
 describe('MenusService', () => {
   let service: MenusService;
+  let menu: any;
+  let repository: MenuRepository;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [MenusService],
+      imports: [
+        MongoModule,
+        MongooseModule.forFeature([
+          {
+            name: Menu.name,
+            schema: MenuSchema,
+          },
+        ]),
+      ],
+      providers: [MenusService, MenuRepository],
     }).compile();
 
     service = module.get<MenusService>(MenusService);
+    repository = module.get<MenuRepository>(MenuRepository);
+    menu = service.getMenu();
+  });
+
+  afterAll(async () => {
+    await connections[1].close();
   });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
 
+  describe('getMenuById', () => {
+    let sampleMenu: MenuEntity;
+    let savedMenu: Menu;
+    let recMenu: MenuEntity;
+
+    beforeAll(async () => {
+      sampleMenu = menuStub();
+      savedMenu = await repository.createMenu(sampleMenu);
+      recMenu = await service.getMenuById(savedMenu._id);
+      sampleMenu._id = savedMenu._id;
+    });
+
+    afterAll(async () => {
+      await connections[1].dropCollection('menus');
+    });
+
+    it('should call repository', async () => {
+      const mockRepository = jest.spyOn(repository, 'getMenuById');
+      await service.getMenuById(savedMenu._id);
+      expect(mockRepository).toHaveBeenCalled();
+    });
+
+    it('should return the menu', () => {
+      expect(recMenu).toMatchObject(sampleMenu);
+    });
+  });
+
   describe('getMenu', () => {
     it('should return the menu', () => {
-      expect(service.getMenu()).toMatchObject(menuStub());
+      expect(menu).toMatchObject(menuStub());
     });
 
-    it('should return instance of Menu', () => {
-      expect(service.getMenu()).toBeInstanceOf(Menu);
-    });
+    describe('menu', () => {
+      it('should contain index, title, description and categories', () => {
+        expect(menu.index).toBeTruthy();
+        expect(menu.title).toBeTruthy();
+        expect(menu.description).toBeTruthy();
+        expect(menu.categories).toBeTruthy();
+      });
 
-    it('should contain a title', () => {
-      const menu: Menu = service.getMenu();
-      expect(menu).toMatchObject({ title: 'I am a title' });
+      describe('categories', () => {
+        it('should contain index, title, description and products', () => {
+          expect(menu.categories[0].index).toBeTruthy();
+          expect(menu.categories[0].title).toBeTruthy();
+          expect(menu.categories[0].description).toBeTruthy();
+          expect(menu.categories[0].products).toBeTruthy();
+        });
+
+        describe('menu', () => {
+          it('should contain index, title, description and price', () => {
+            expect(menu.categories[0].products[0].index).toBeTruthy();
+            expect(menu.categories[0].products[0].title).toBeTruthy();
+            expect(menu.categories[0].products[0].description).toBeTruthy();
+            expect(menu.categories[0].products[0].price).toBeTruthy();
+          });
+        });
+      });
     });
   });
 });

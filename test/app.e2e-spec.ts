@@ -25,7 +25,7 @@ describe('AppController (e2e)', () => {
       origin: process.env.CORS_ORIGIN,
       credentials: true,
     });
-    app.listen(process.env.PORT, process.env.HOST);
+    await app.listen(process.env.PORT, process.env.HOST);
   });
 
   afterAll(async () => {
@@ -41,11 +41,9 @@ describe('AppController (e2e)', () => {
   });
 
   it('/menus (GET)', () => {
-    const { ...expected } = menuStub();
-
     return request(app.getHttpServer())
       .get('/menus')
       .expect(200)
-      .expect(expected);
+      .expect(menuStub());
   });
 });
