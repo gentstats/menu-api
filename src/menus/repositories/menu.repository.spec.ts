@@ -2,8 +2,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import { connections } from 'mongoose';
 import { MongoModule } from '../../mongo/mongo.module';
-import { MenusModule } from '../menus.module';
+import { MenuEntity } from '../entities/menu.entity';
 import { Menu, MenuSchema } from '../schemas/menu.schema';
+import { menuStub } from '../stubs/menu.stub';
 import { MenuRepository } from './menu.repository';
 
 describe('MenusController', () => {
@@ -34,5 +35,13 @@ describe('MenusController', () => {
 
   it('should be defined', () => {
     expect(repository).toBeDefined();
+  });
+
+  describe('createMenu', () => {
+    const sampleMenu = menuStub();
+
+    it('should create an entry with _id and menu', async () => {});
+
+    it('menu content should match input', async () => {});
   });
 });
