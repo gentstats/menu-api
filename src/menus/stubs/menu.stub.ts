@@ -5,6 +5,13 @@ export const menuStub = (): Menu => {
     index: 1,
     title: 'I am a title',
     description: 'Well described',
-    categories: [{}],
+    categories: [
+      {
+        index: 1,
+        title: 'I am a title',
+        description: 'Well described',
+        products: [{}],
+      },
+    ],
   };
 };
