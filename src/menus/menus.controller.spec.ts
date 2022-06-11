@@ -1,4 +1,4 @@
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import { connections, Types } from 'mongoose';
@@ -77,7 +77,7 @@ describe('MenusController', () => {
     it(`if id does not exist  in db, should return not found exception`, async () => {
       const sampleId = new Types.ObjectId().toHexString();
       await expect(controller.getMenuById(sampleId)).rejects.toThrow(
-        BadRequestException,
+        NotFoundException,
       );
     });
   });

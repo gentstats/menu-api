@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { MenuEntity } from '../entities/menu.entity';
@@ -18,6 +18,7 @@ export class MenuRepository {
   }
   async getMenuById(_id: Types.ObjectId): Promise<MenuEntity> {
     const res: Menu = await this.menuModel.findById(_id);
+    if (!res) throw new NotFoundException('Id not found');
     return { _id, ...res.menu[0] };
   }
 }
