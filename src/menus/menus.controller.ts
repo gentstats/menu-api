@@ -10,6 +10,8 @@ import {
 import { MenusService } from './menus.service';
 import { CreateMenuDto } from './dto/create-menu.dto';
 import { UpdateMenuDto } from './dto/update-menu.dto';
+import { Types } from 'mongoose';
+import { MenuEntity } from './entities/menu.entity';
 
 @Controller('menus')
 export class MenusController {
@@ -18,6 +20,11 @@ export class MenusController {
   @Get()
   getMenu() {
     return this.menusService.getMenu();
+  }
+
+  @Get(':id')
+  async getMenuById(@Param('id') id: string): Promise<MenuEntity> {
+    return await this.menusService.getMenuById(id);
   }
 
   // @Post()

@@ -45,16 +45,17 @@ describe('MenusController', () => {
   describe('getMenuById', () => {
     let sampleMenu: MenuEntity;
     let savedMenu: Menu;
+    let recMenu: MenuEntity;
 
     beforeAll(async () => {
       sampleMenu = menuStub();
       savedMenu = await repository.createMenu(sampleMenu);
       sampleMenu._id = savedMenu._id;
-      recMenu = await controller.getMenuById(savedMenu._id);
+      recMenu = await controller.getMenuById(savedMenu._id.toHexString());
     });
     it(`should call service`, () => {
       const getMenuByIdSpy = jest.spyOn(service, 'getMenuById');
-      controller.getMenuById(savedMenu._id);
+      controller.getMenuById(savedMenu._id.toHexString());
       expect(getMenuByIdSpy).toHaveBeenCalled();
     });
 

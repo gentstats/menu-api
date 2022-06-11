@@ -48,7 +48,7 @@ describe('MenusService', () => {
     beforeAll(async () => {
       sampleMenu = menuStub();
       savedMenu = await repository.createMenu(sampleMenu);
-      recMenu = await service.getMenuById(savedMenu._id);
+      recMenu = await service.getMenuById(savedMenu._id.toHexString());
       sampleMenu._id = savedMenu._id;
     });
 
@@ -58,7 +58,7 @@ describe('MenusService', () => {
 
     it('should call repository', async () => {
       const mockRepository = jest.spyOn(repository, 'getMenuById');
-      await service.getMenuById(savedMenu._id);
+      await service.getMenuById(savedMenu._id.toHexString());
       expect(mockRepository).toHaveBeenCalled();
     });
 

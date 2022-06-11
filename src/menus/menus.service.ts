@@ -9,8 +9,9 @@ import { menuStub } from './stubs/menu.stub';
 export class MenusService {
   constructor(private readonly menuRepository: MenuRepository) {}
 
-  async getMenuById(_id: Types.ObjectId) {
-    return await this.menuRepository.getMenuById(_id);
+  async getMenuById(_id: string) {
+    const id = new Types.ObjectId(_id);
+    return await this.menuRepository.getMenuById(id);
   }
   getMenu() {
     return menuStub();
