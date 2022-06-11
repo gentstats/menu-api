@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Types } from 'mongoose';
 import { CreateMenuDto } from './dto/create-menu.dto';
 import { UpdateMenuDto } from './dto/update-menu.dto';
@@ -9,8 +9,11 @@ import { menuStub } from './stubs/menu.stub';
 export class MenusService {
   constructor(private readonly menuRepository: MenuRepository) {}
 
-  async getMenuById(_id: Types.ObjectId) {
-    return await this.menuRepository.getMenuById(_id);
+  async getMenuById(_id: string) {
+    if (!Types.ObjectId.isValid(_id))
+      throw new BadRequestException('Invalid Id');
+    const id = new Types.ObjectId(_id);
+    return await this.menuRepository.getMenuById(id);
   }
   getMenu() {
     return menuStub();
