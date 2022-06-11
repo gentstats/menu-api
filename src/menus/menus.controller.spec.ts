@@ -12,6 +12,7 @@ import { menuStub } from './stubs/menu.stub';
 describe('MenusController', () => {
   let controller: MenusController;
   let service: MenusService;
+  let repository: MenuRepository;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -30,6 +31,7 @@ describe('MenusController', () => {
 
     controller = module.get<MenusController>(MenusController);
     service = module.get<MenusService>(MenusService);
+    repository = module.get<MenuRepository>(MenuRepository);
   });
 
   afterAll(async () => {
@@ -38,6 +40,27 @@ describe('MenusController', () => {
 
   it('should be defined', () => {
     expect(controller).toBeDefined();
+  });
+
+  describe('getMenuById', () => {
+    let sampleMenu: MenuEntity;
+    let savedMenu: Menu;
+
+    beforeAll(async () => {
+      sampleMenu = menuStub();
+      savedMenu = await repository.createMenu(sampleMenu);
+      sampleMenu._id = savedMenu._id;
+      recMenu = await controller.getMenuById(savedMenu._id);
+    });
+    it(`should call service`, () => {
+      const getMenuByIdSpy = jest.spyOn(service, 'getMenuById');
+      controller.getMenuById(savedMenu._id);
+      expect(getMenuByIdSpy).toHaveBeenCalled();
+    });
+
+    it(`should return the service's output`, () => {
+      expect(recMenu).toMatchObject(sampleMenu);
+    });
   });
 
   describe('getMenu', () => {
