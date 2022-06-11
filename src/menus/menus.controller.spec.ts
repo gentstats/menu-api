@@ -1,6 +1,7 @@
+import { BadRequestException } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
-import { connections } from 'mongoose';
+import { connections, Types } from 'mongoose';
 import { MongoModule } from '../mongo/mongo.module';
 import { MenuEntity } from './entities/menu.entity';
 import { MenusController } from './menus.controller';
@@ -53,6 +54,11 @@ describe('MenusController', () => {
       sampleMenu._id = savedMenu._id;
       recMenu = await controller.getMenuById(savedMenu._id.toHexString());
     });
+
+    afterAll(async () => {
+      await connections[1].dropCollection('menus');
+    });
+
     it(`should call service`, () => {
       const getMenuByIdSpy = jest.spyOn(service, 'getMenuById');
       controller.getMenuById(savedMenu._id.toHexString());
@@ -61,6 +67,18 @@ describe('MenusController', () => {
 
     it(`should return the service's output`, () => {
       expect(recMenu).toMatchObject(sampleMenu);
+    });
+
+    it(`if id is invalid, should return bad request exception`, async () => {
+      await expect(controller.getMenuById('asdf')).rejects.toThrow(
+        BadRequestException,
+      );
+    });
+    it(`if id does not exist  in db, should return not found exception`, async () => {
+      const sampleId = new Types.ObjectId().toHexString();
+      await expect(controller.getMenuById(sampleId)).rejects.toThrow(
+        BadRequestException,
+      );
     });
   });
 
