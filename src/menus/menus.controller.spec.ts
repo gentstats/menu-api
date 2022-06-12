@@ -8,7 +8,7 @@ import { MenusController } from './menus.controller';
 import { MenusService } from './menus.service';
 import { MenuRepository } from './repositories/menu.repository';
 import { Menu, MenuSchema } from './schemas/menu.schema';
-import { menuStub } from './stubs/menu.stub';
+import { menuStub, multipleMenuStub } from './stubs/menu.stub';
 
 describe('MenusController', () => {
   let controller: MenusController;
@@ -44,26 +44,27 @@ describe('MenusController', () => {
   });
 
   describe('getMenuByIdLang', () => {
-    let sampleMenu: MenuEntity;
-    let savedMenu: Menu;
+    let sampleMenus: MenuEntity[];
+    let savedMenus: Menu;
     let recMenu: MenuEntity;
 
     beforeEach(async () => {
-      sampleMenu = menuStub();
-      savedMenu = await repository.createMenu(sampleMenu);
-      sampleMenu._id = savedMenu._id;
-      recMenu = await controller.getMenuById(savedMenu._id.toHexString());
+      sampleMenus = multipleMenuStub();
+      savedMenus = await repository.createMenus(sampleMenus);
+      recMenu = await service.getMenuById(savedMenus._id.toHexString());
     });
 
     it(`should call service`, () => {
       const getMenuByIdSpy = jest.spyOn(service, 'getMenuByIdLang');
-      controller.getMenuByIdLang(savedMenu._id.toHexString(), 'es');
+      controller.getMenuByIdLang(savedMenus._id.toHexString(), 'es');
       expect(getMenuByIdSpy).toHaveBeenCalled();
     });
 
-    // it(`should return the service's output`, () => {
-    //   expect(recMenu).toMatchObject(sampleMenu);
-    // });
+    it('output should match service output', async () => {
+      expect(
+        await controller.getMenuByIdLang(savedMenus._id.toHexString(), 'es'),
+      ).toMatchObject(recMenu);
+    });
 
     // it(`if id is invalid, should return bad request exception`, async () => {
     //   await expect(controller.getMenuById('asdf')).rejects.toThrow(
