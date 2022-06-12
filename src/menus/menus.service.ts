@@ -9,6 +9,16 @@ import { menuStub } from './stubs/menu.stub';
 export class MenusService {
   constructor(private readonly menuRepository: MenuRepository) {}
 
+  async getMenuByIdLang(params: { _id: string; lang: string }) {
+    if (!Types.ObjectId.isValid(params._id))
+      throw new BadRequestException('Invalid Id');
+    const id = new Types.ObjectId(params._id);
+    return await this.menuRepository.getMenuByIdLang({
+      _id: id,
+      lang: params.lang,
+    });
+  }
+
   async getMenuById(_id: string) {
     if (!Types.ObjectId.isValid(_id))
       throw new BadRequestException('Invalid Id');

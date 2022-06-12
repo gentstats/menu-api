@@ -40,6 +40,32 @@ describe('MenusService', () => {
     expect(service).toBeDefined();
   });
 
+  describe('getMenuByIdLang', () => {
+    let sampleMenu: MenuEntity;
+    let savedMenu: Menu;
+    let recMenu: MenuEntity;
+
+    beforeEach(async () => {
+      sampleMenu = menuStub();
+      savedMenu = await repository.createMenu(sampleMenu);
+      recMenu = await service.getMenuById(savedMenu._id.toHexString());
+      sampleMenu._id = savedMenu._id;
+    });
+
+    it('should call repository', async () => {
+      const mockRepository = jest.spyOn(repository, 'getMenuByIdLang');
+      await service.getMenuByIdLang({
+        _id: savedMenu._id.toHexString(),
+        lang: 'es',
+      });
+      expect(mockRepository).toHaveBeenCalled();
+    });
+
+    // it('should return the menu', () => {
+    //   expect(recMenu).toMatchObject(sampleMenu);
+    // });
+  });
+
   describe('getMenuById', () => {
     let sampleMenu: MenuEntity;
     let savedMenu: Menu;

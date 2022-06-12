@@ -43,6 +43,41 @@ describe('MenusController', () => {
     expect(controller).toBeDefined();
   });
 
+  describe('getMenuByIdLang', () => {
+    let sampleMenu: MenuEntity;
+    let savedMenu: Menu;
+    let recMenu: MenuEntity;
+
+    beforeEach(async () => {
+      sampleMenu = menuStub();
+      savedMenu = await repository.createMenu(sampleMenu);
+      sampleMenu._id = savedMenu._id;
+      recMenu = await controller.getMenuById(savedMenu._id.toHexString());
+    });
+
+    it(`should call service`, () => {
+      const getMenuByIdSpy = jest.spyOn(service, 'getMenuByIdLang');
+      controller.getMenuByIdLang(savedMenu._id.toHexString(), 'es');
+      expect(getMenuByIdSpy).toHaveBeenCalled();
+    });
+
+    // it(`should return the service's output`, () => {
+    //   expect(recMenu).toMatchObject(sampleMenu);
+    // });
+
+    // it(`if id is invalid, should return bad request exception`, async () => {
+    //   await expect(controller.getMenuById('asdf')).rejects.toThrow(
+    //     BadRequestException,
+    //   );
+    // });
+    // it(`if id does not exist  in db, should return not found exception`, async () => {
+    //   const sampleId = new Types.ObjectId().toHexString();
+    //   await expect(controller.getMenuById(sampleId)).rejects.toThrow(
+    //     NotFoundException,
+    //   );
+    // });
+  });
+
   describe('getMenuById', () => {
     let sampleMenu: MenuEntity;
     let savedMenu: Menu;
