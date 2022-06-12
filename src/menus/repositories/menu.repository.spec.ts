@@ -89,7 +89,6 @@ describe('MenusController', () => {
     beforeAll(async () => {
       sampleMenu = menuStub();
       savedMenu = await repository.createMenu(sampleMenu);
-      recMenu = await repository.getMenuById(savedMenu._id);
       sampleMenu._id = savedMenu._id;
     });
 
@@ -99,6 +98,39 @@ describe('MenusController', () => {
 
     it('should return the menu', () => {
       expect(recMenu).toMatchObject(sampleMenu);
+    });
+
+    describe(`when is called with param 'es'`, () => {
+      it(`title hould be 'Soy un título'`, async () => {
+        recMenu = await repository.getMenuByIdLang({
+          _id: savedMenu._id,
+          lang: 'es',
+        });
+
+        expect(recMenu.title).toBe('Soy un título');
+      });
+    });
+
+    describe(`when is called with param 'en'`, () => {
+      it(`title hould be 'I am a title'`, async () => {
+        recMenu = await repository.getMenuByIdLang({
+          _id: savedMenu._id,
+          lang: 'en',
+        });
+
+        expect(recMenu.title).toBe('I am a title');
+      });
+    });
+
+    describe(`when is called with param 'it'`, () => {
+      it(`title hould be 'I am a title'`, async () => {
+        recMenu = await repository.getMenuByIdLang({
+          _id: savedMenu._id,
+          lang: 'it',
+        });
+
+        expect(recMenu.title).toBe('I am a title');
+      });
     });
   });
 });
