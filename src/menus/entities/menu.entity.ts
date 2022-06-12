@@ -16,7 +16,7 @@ export class Category {
 
 export class MenuEntity {
   _id?: Types.ObjectId;
-  index: number;
+  lang: string;
   title: string;
   description: string;
   categories: Category[];
