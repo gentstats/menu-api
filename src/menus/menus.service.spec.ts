@@ -96,7 +96,7 @@ describe('MenusService', () => {
 
     describe('menu', () => {
       it('should contain index, title, description and categories', () => {
-        expect(menu.index).toBeTruthy();
+        expect(menu.lang).toBeTruthy();
         expect(menu.title).toBeTruthy();
         expect(menu.description).toBeTruthy();
         expect(menu.categories).toBeTruthy();
