@@ -45,15 +45,11 @@ describe('MenusService', () => {
     let savedMenu: Menu;
     let recMenu: MenuEntity;
 
-    beforeAll(async () => {
+    beforeEach(async () => {
       sampleMenu = menuStub();
       savedMenu = await repository.createMenu(sampleMenu);
       recMenu = await service.getMenuById(savedMenu._id.toHexString());
       sampleMenu._id = savedMenu._id;
-    });
-
-    afterAll(async () => {
-      await connections[1].dropCollection('menus');
     });
 
     it('should call repository', async () => {
