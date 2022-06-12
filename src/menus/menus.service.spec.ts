@@ -6,7 +6,7 @@ import { MenuEntity } from './entities/menu.entity';
 import { MenusService } from './menus.service';
 import { MenuRepository } from './repositories/menu.repository';
 import { Menu, MenuSchema } from './schemas/menu.schema';
-import { menuStub } from './stubs/menu.stub';
+import { menuStub, multipleMenuStub } from './stubs/menu.stub';
 
 describe('MenusService', () => {
   let service: MenusService;
@@ -33,6 +33,7 @@ describe('MenusService', () => {
   });
 
   afterAll(async () => {
+    await connections[1].dropCollection('menus');
     await connections[1].close();
   });
 
@@ -40,20 +41,49 @@ describe('MenusService', () => {
     expect(service).toBeDefined();
   });
 
+  describe('getMenuByIdLang', () => {
+    let sampleMenus: MenuEntity[];
+    let savedMenus: Menu;
+    let recMenu: MenuEntity;
+
+    beforeEach(async () => {
+      sampleMenus = multipleMenuStub();
+      savedMenus = await repository.createMenus(sampleMenus);
+      recMenu = await repository.getMenuByIdLang({
+        _id: savedMenus._id,
+        lang: 'es',
+      });
+    });
+
+    it('should call repository', async () => {
+      const mockRepository = jest.spyOn(repository, 'getMenuByIdLang');
+      await service.getMenuByIdLang({
+        _id: savedMenus._id.toHexString(),
+        lang: 'es',
+      });
+      expect(mockRepository).toHaveBeenCalled();
+    });
+
+    it('output should match repository output', async () => {
+      expect(
+        await service.getMenuByIdLang({
+          _id: savedMenus._id.toHexString(),
+          lang: 'es',
+        }),
+      ).toMatchObject(recMenu);
+    });
+  });
+
   describe('getMenuById', () => {
     let sampleMenu: MenuEntity;
     let savedMenu: Menu;
     let recMenu: MenuEntity;
 
-    beforeAll(async () => {
+    beforeEach(async () => {
       sampleMenu = menuStub();
       savedMenu = await repository.createMenu(sampleMenu);
       recMenu = await service.getMenuById(savedMenu._id.toHexString());
       sampleMenu._id = savedMenu._id;
-    });
-
-    afterAll(async () => {
-      await connections[1].dropCollection('menus');
     });
 
     it('should call repository', async () => {
@@ -74,7 +104,7 @@ describe('MenusService', () => {
 
     describe('menu', () => {
       it('should contain index, title, description and categories', () => {
-        expect(menu.index).toBeTruthy();
+        expect(menu.lang).toBeTruthy();
         expect(menu.title).toBeTruthy();
         expect(menu.description).toBeTruthy();
         expect(menu.categories).toBeTruthy();

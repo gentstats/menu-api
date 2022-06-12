@@ -8,7 +8,7 @@ import { MenusController } from './menus.controller';
 import { MenusService } from './menus.service';
 import { MenuRepository } from './repositories/menu.repository';
 import { Menu, MenuSchema } from './schemas/menu.schema';
-import { menuStub } from './stubs/menu.stub';
+import { menuStub, multipleMenuStub } from './stubs/menu.stub';
 
 describe('MenusController', () => {
   let controller: MenusController;
@@ -36,6 +36,7 @@ describe('MenusController', () => {
   });
 
   afterAll(async () => {
+    await connections[1].dropCollection('menus');
     await connections[1].close();
   });
 
@@ -43,20 +44,52 @@ describe('MenusController', () => {
     expect(controller).toBeDefined();
   });
 
+  describe('getMenuByIdLang', () => {
+    let sampleMenus: MenuEntity[];
+    let savedMenus: Menu;
+    let recMenu: MenuEntity;
+
+    beforeEach(async () => {
+      sampleMenus = multipleMenuStub();
+      savedMenus = await repository.createMenus(sampleMenus);
+      recMenu = await service.getMenuById(savedMenus._id.toHexString());
+    });
+
+    it(`should call service`, () => {
+      const getMenuByIdSpy = jest.spyOn(service, 'getMenuByIdLang');
+      controller.getMenuByIdLang(savedMenus._id.toHexString(), 'es');
+      expect(getMenuByIdSpy).toHaveBeenCalled();
+    });
+
+    it('output should match service output', async () => {
+      expect(
+        await controller.getMenuByIdLang(savedMenus._id.toHexString(), 'es'),
+      ).toMatchObject(recMenu);
+    });
+
+    // it(`if id is invalid, should return bad request exception`, async () => {
+    //   await expect(controller.getMenuById('asdf')).rejects.toThrow(
+    //     BadRequestException,
+    //   );
+    // });
+    // it(`if id does not exist  in db, should return not found exception`, async () => {
+    //   const sampleId = new Types.ObjectId().toHexString();
+    //   await expect(controller.getMenuById(sampleId)).rejects.toThrow(
+    //     NotFoundException,
+    //   );
+    // });
+  });
+
   describe('getMenuById', () => {
     let sampleMenu: MenuEntity;
     let savedMenu: Menu;
     let recMenu: MenuEntity;
 
-    beforeAll(async () => {
+    beforeEach(async () => {
       sampleMenu = menuStub();
       savedMenu = await repository.createMenu(sampleMenu);
       sampleMenu._id = savedMenu._id;
       recMenu = await controller.getMenuById(savedMenu._id.toHexString());
-    });
-
-    afterAll(async () => {
-      await connections[1].dropCollection('menus');
     });
 
     it(`should call service`, () => {

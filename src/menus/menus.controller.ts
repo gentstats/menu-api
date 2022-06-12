@@ -27,6 +27,14 @@ export class MenusController {
     return await this.menusService.getMenuById(id);
   }
 
+  @Get(':id:lang')
+  async getMenuByIdLang(
+    @Param('id') id: string,
+    @Param('lang') lang: string,
+  ): Promise<MenuEntity> {
+    return await this.menusService.getMenuByIdLang({ _id: id, lang });
+  }
+
   // @Post()
   // create(@Body() createMenuDto: CreateMenuDto) {
   //   return this.menusService.create(createMenuDto);

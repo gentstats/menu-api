@@ -4,7 +4,7 @@ import { connections } from 'mongoose';
 import { MongoModule } from '../../mongo/mongo.module';
 import { MenuEntity } from '../entities/menu.entity';
 import { Menu, MenuSchema } from '../schemas/menu.schema';
-import { menuStub } from '../stubs/menu.stub';
+import { menuStub, multipleMenuStub } from '../stubs/menu.stub';
 import { MenuRepository } from './menu.repository';
 
 describe('MenusController', () => {
@@ -78,6 +78,54 @@ describe('MenusController', () => {
 
     it('should return the menu', () => {
       expect(recMenu).toMatchObject(sampleMenu);
+    });
+  });
+
+  describe('getMenuByIdLang', () => {
+    let sampleMenus: MenuEntity[];
+    let savedMenu: Menu;
+    let recMenu: MenuEntity;
+
+    beforeAll(async () => {
+      sampleMenus = multipleMenuStub();
+      savedMenu = await repository.createMenus(sampleMenus);
+    });
+
+    afterAll(async () => {
+      await connections[1].dropCollection('menus');
+    });
+
+    describe(`when is called with param 'es'`, () => {
+      it(`title hould be 'Soy un título'`, async () => {
+        recMenu = await repository.getMenuByIdLang({
+          _id: savedMenu._id,
+          lang: 'es',
+        });
+
+        expect(recMenu.title).toBe('Soy un título');
+      });
+    });
+
+    describe(`when is called with param 'en'`, () => {
+      it(`title hould be 'I am a title'`, async () => {
+        recMenu = await repository.getMenuByIdLang({
+          _id: savedMenu._id,
+          lang: 'en',
+        });
+
+        expect(recMenu.title).toBe('I am a title');
+      });
+    });
+
+    describe(`when is called with param 'it'`, () => {
+      it(`title hould be 'I am a title'`, async () => {
+        recMenu = await repository.getMenuByIdLang({
+          _id: savedMenu._id,
+          lang: 'it',
+        });
+
+        expect(recMenu.title).toBe('I am a title');
+      });
     });
   });
 });
