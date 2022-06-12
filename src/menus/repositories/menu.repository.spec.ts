@@ -4,7 +4,7 @@ import { connections } from 'mongoose';
 import { MongoModule } from '../../mongo/mongo.module';
 import { MenuEntity } from '../entities/menu.entity';
 import { Menu, MenuSchema } from '../schemas/menu.schema';
-import { menuStub } from '../stubs/menu.stub';
+import { menuStub, multipleMenuStub } from '../stubs/menu.stub';
 import { MenuRepository } from './menu.repository';
 
 describe('MenusController', () => {
@@ -82,22 +82,17 @@ describe('MenusController', () => {
   });
 
   describe('getMenuByIdLang', () => {
-    let sampleMenu: MenuEntity;
+    let sampleMenus: MenuEntity[];
     let savedMenu: Menu;
     let recMenu: MenuEntity;
 
     beforeAll(async () => {
-      sampleMenu = menuStub();
-      savedMenu = await repository.createMenu(sampleMenu);
-      sampleMenu._id = savedMenu._id;
+      sampleMenus = multipleMenuStub();
+      savedMenu = await repository.createMenus(sampleMenus);
     });
 
     afterAll(async () => {
       await connections[1].dropCollection('menus');
-    });
-
-    it('should return the menu', () => {
-      expect(recMenu).toMatchObject(sampleMenu);
     });
 
     describe(`when is called with param 'es'`, () => {

@@ -27,7 +27,7 @@ export const multipleMenuStub = (): MenuEntity[] => {
   return [
     {
       lang: 'es',
-      title: 'I am a title',
+      title: 'Soy un título',
       description: 'Well described',
       categories: [
         {

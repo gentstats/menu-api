@@ -33,6 +33,19 @@ export class MenuRepository {
   }): Promise<MenuEntity> {
     const res: Menu = await this.menuModel.findById(params._id);
     if (!res) throw new NotFoundException('Id not found');
-    return { _id: params._id, ...res.menu[0] };
+
+    if (params.lang !== 'es' && params.lang !== 'en') {
+      params.lang = 'en';
+    }
+
+    let menu = res.menu.filter((menu) => {
+      return menu.lang === params.lang;
+    })[0];
+
+    if (!menu) {
+      menu = res.menu[0];
+    }
+
+    return { _id: params._id, ...menu };
   }
 }
