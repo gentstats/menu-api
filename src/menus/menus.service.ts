@@ -19,12 +19,12 @@ export class MenusService {
     });
   }
 
-  async getMenuById(_id: string) {
-    if (!Types.ObjectId.isValid(_id))
-      throw new BadRequestException('Invalid Id');
-    const id = new Types.ObjectId(_id);
-    return await this.menuRepository.getMenuById(id);
-  }
+  // async getMenuById(_id: string) {
+  //   if (!Types.ObjectId.isValid(_id))
+  //     throw new BadRequestException('Invalid Id');
+  //   const id = new Types.ObjectId(_id);
+  //   return await this.menuRepository.getMenuById(id);
+  // }
   getMenu() {
     return menuStub();
   }

@@ -52,12 +52,15 @@ describe('MenusController', () => {
     beforeEach(async () => {
       sampleMenus = multipleMenuStub();
       savedMenus = await repository.createMenus(sampleMenus);
-      recMenu = await service.getMenuById(savedMenus._id.toHexString());
+      // recMenu = await service.getMenuById(savedMenus._id.toHexString());
     });
 
-    it(`should call service`, () => {
+    it(`should call service`, async () => {
       const getMenuByIdSpy = jest.spyOn(service, 'getMenuByIdLang');
-      controller.getMenuByIdLang(savedMenus._id.toHexString(), 'es');
+      recMenu = await controller.getMenuByIdLang(
+        savedMenus._id.toHexString(),
+        'es',
+      );
       expect(getMenuByIdSpy).toHaveBeenCalled();
     });
 
@@ -80,40 +83,40 @@ describe('MenusController', () => {
     // });
   });
 
-  describe('getMenuById', () => {
-    let sampleMenu: MenuEntity;
-    let savedMenu: Menu;
-    let recMenu: MenuEntity;
+  // describe('getMenuById', () => {
+  //   let sampleMenu: MenuEntity;
+  //   let savedMenu: Menu;
+  //   let recMenu: MenuEntity;
 
-    beforeEach(async () => {
-      sampleMenu = menuStub();
-      savedMenu = await repository.createMenu(sampleMenu);
-      sampleMenu._id = savedMenu._id;
-      recMenu = await controller.getMenuById(savedMenu._id.toHexString());
-    });
+  //   beforeEach(async () => {
+  //     sampleMenu = menuStub();
+  //     savedMenu = await repository.createMenu(sampleMenu);
+  //     sampleMenu._id = savedMenu._id;
+  //     recMenu = await controller.getMenuById(savedMenu._id.toHexString());
+  //   });
 
-    it(`should call service`, () => {
-      const getMenuByIdSpy = jest.spyOn(service, 'getMenuById');
-      controller.getMenuById(savedMenu._id.toHexString());
-      expect(getMenuByIdSpy).toHaveBeenCalled();
-    });
+  //   it(`should call service`, () => {
+  //     const getMenuByIdSpy = jest.spyOn(service, 'getMenuById');
+  //     controller.getMenuById(savedMenu._id.toHexString());
+  //     expect(getMenuByIdSpy).toHaveBeenCalled();
+  //   });
 
-    it(`should return the service's output`, () => {
-      expect(recMenu).toMatchObject(sampleMenu);
-    });
+  //   it(`should return the service's output`, () => {
+  //     expect(recMenu).toMatchObject(sampleMenu);
+  //   });
 
-    it(`if id is invalid, should return bad request exception`, async () => {
-      await expect(controller.getMenuById('asdf')).rejects.toThrow(
-        BadRequestException,
-      );
-    });
-    it(`if id does not exist  in db, should return not found exception`, async () => {
-      const sampleId = new Types.ObjectId().toHexString();
-      await expect(controller.getMenuById(sampleId)).rejects.toThrow(
-        NotFoundException,
-      );
-    });
-  });
+  //   it(`if id is invalid, should return bad request exception`, async () => {
+  //     await expect(controller.getMenuById('asdf')).rejects.toThrow(
+  //       BadRequestException,
+  //     );
+  //   });
+  //   it(`if id does not exist  in db, should return not found exception`, async () => {
+  //     const sampleId = new Types.ObjectId().toHexString();
+  //     await expect(controller.getMenuById(sampleId)).rejects.toThrow(
+  //       NotFoundException,
+  //     );
+  //   });
+  // });
 
   describe('getMenu', () => {
     it(`should call service`, () => {

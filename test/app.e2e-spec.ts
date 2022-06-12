@@ -8,7 +8,7 @@ import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
-import { menuStub } from '../src/menus/stubs/menu.stub';
+import { menuStub, multipleMenuStub } from '../src/menus/stubs/menu.stub';
 import { MenuRepository } from '../src/menus/repositories/menu.repository';
 import { MenusService } from '../src/menus/menus.service';
 
@@ -53,13 +53,22 @@ describe('AppController (e2e)', () => {
       .expect(menuStub());
   });
 
-  it('/menus/:id', async () => {
-    const savedMenu = await repository.createMenu(menuStub());
-    const savedId = savedMenu._id.toHexString();
-    const res = await request(app.getHttpServer())
-      .get(`/menus/${savedId}`)
-      .expect(200);
+  // it('/menus/:id', async () => {
+  //   const savedMenu = await repository.createMenu(menuStub());
+  //   const savedId = savedMenu._id.toHexString();
+  //   const res = await request(app.getHttpServer())
+  //     .get(`/menus/${savedId}`)
+  //     .expect(200);
 
+  //   expect(res.body._id === savedId).toBeTruthy();
+  // });
+
+  it('/menus/:lang/:id', async () => {
+    const savedMenus = await repository.createMenus(multipleMenuStub());
+    const savedId = savedMenus._id.toHexString();
+    const res = await request(app.getHttpServer())
+      .get(`/menus/${savedId}/es`)
+      .expect(200);
     expect(res.body._id === savedId).toBeTruthy();
   });
 });
