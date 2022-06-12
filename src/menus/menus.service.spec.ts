@@ -33,6 +33,7 @@ describe('MenusService', () => {
   });
 
   afterAll(async () => {
+    await connections[1].dropCollection('menus');
     await connections[1].close();
   });
 
