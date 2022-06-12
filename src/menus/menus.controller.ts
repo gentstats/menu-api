@@ -22,10 +22,10 @@ export class MenusController {
     return this.menusService.getMenu();
   }
 
-  @Get(':id')
-  async getMenuById(@Param('id') id: string): Promise<MenuEntity> {
-    return await this.menusService.getMenuById(id);
-  }
+  // @Get(':id')
+  // async getMenuById(@Param('id') id: string): Promise<MenuEntity> {
+  //   return await this.menusService.getMenuById(id);
+  // }
 
   @Get(':id:lang')
   async getMenuByIdLang(
