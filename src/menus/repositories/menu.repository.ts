@@ -21,11 +21,11 @@ export class MenuRepository {
     return await this.menuModel.create({ menu: menu });
   }
 
-  async getMenuById(_id: Types.ObjectId): Promise<MenuEntity> {
-    const res: Menu = await this.menuModel.findById(_id);
-    if (!res) throw new NotFoundException('Id not found');
-    return { _id, ...res.menu[0] };
-  }
+  // async getMenuById(_id: Types.ObjectId): Promise<MenuEntity> {
+  //   const res: Menu = await this.menuModel.findById(_id);
+  //   if (!res) throw new NotFoundException('Id not found');
+  //   return { _id, ...res.menu[0] };
+  // }
 
   async getMenuByIdLang(params: {
     _id: Types.ObjectId;

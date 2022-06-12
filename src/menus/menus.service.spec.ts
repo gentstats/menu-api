@@ -74,28 +74,28 @@ describe('MenusService', () => {
     });
   });
 
-  describe('getMenuById', () => {
-    let sampleMenu: MenuEntity;
-    let savedMenu: Menu;
-    let recMenu: MenuEntity;
+  // describe('getMenuById', () => {
+  //   let sampleMenu: MenuEntity;
+  //   let savedMenu: Menu;
+  //   let recMenu: MenuEntity;
 
-    beforeEach(async () => {
-      sampleMenu = menuStub();
-      savedMenu = await repository.createMenu(sampleMenu);
-      recMenu = await service.getMenuById(savedMenu._id.toHexString());
-      sampleMenu._id = savedMenu._id;
-    });
+  //   beforeEach(async () => {
+  //     sampleMenu = menuStub();
+  //     savedMenu = await repository.createMenu(sampleMenu);
+  //     recMenu = await service.getMenuById(savedMenu._id.toHexString());
+  //     sampleMenu._id = savedMenu._id;
+  //   });
 
-    it('should call repository', async () => {
-      const mockRepository = jest.spyOn(repository, 'getMenuById');
-      await service.getMenuById(savedMenu._id.toHexString());
-      expect(mockRepository).toHaveBeenCalled();
-    });
+  //   it('should call repository', async () => {
+  //     const mockRepository = jest.spyOn(repository, 'getMenuById');
+  //     await service.getMenuById(savedMenu._id.toHexString());
+  //     expect(mockRepository).toHaveBeenCalled();
+  //   });
 
-    it('should return the menu', () => {
-      expect(recMenu).toMatchObject(sampleMenu);
-    });
-  });
+  //   it('should return the menu', () => {
+  //     expect(recMenu).toMatchObject(sampleMenu);
+  //   });
+  // });
 
   describe('getMenu', () => {
     it('should return the menu', () => {
